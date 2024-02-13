@@ -1,0 +1,17 @@
+Performance
+We're querying to get restaurants by time, so it would be more performant to store the restaurants in 30 minute buckets and just request that entry
+Obviously this would be in some type of database in a real environment not a CSV. I typically use Postgres if there isn't a need to use something fancy.
+
+Ingestion/fragility
+The regex ingestion is very fragile and will break if a new format is added to the list.
+Assuming we control the source, the solution here is to enforce clean data coming in at the beginning of the pipeline (ie require minutes).
+If we don't control the source and the formats are anticipated to change, the regex solution would need to be made much more robust.
+
+Testing
+Unit tests should exist on basically all of the python
+Integration tests for the API for a variety of cases that segment the existing data source into sensible groups;
+weekday noon, weekend night, morning, after hours, old dates, future dates, etc.
+
+Stdlib
+A bunch of what I've written here would have been much more robust and maintainable using libraries like Flask, requests, etc
+Usually prefer to use the most popular tools/solutions to build things that actually need to ship, until there's a good reason to make something from scratch or use something niche
